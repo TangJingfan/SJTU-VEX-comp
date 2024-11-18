@@ -2,16 +2,40 @@
 
 using namespace vex;
 
-// A global instance of vex::brain used for printing to the V5 brain screen
-vex::brain Brain;
+// competition mode
+competition Competition;
 
-// define your global instances of motors and other devices here
+// controller entity
+controller Controller;
+
+// motor setup
+motor left_front_motor(PORT1, gearSetting::ratio18_1, false);
+motor right_front_motor(PORT2, gearSetting::ratio18_1, false);
+motor left_back_motor(PORT3, gearSetting::ratio18_1, true);
+motor right_back_motor(PORT4, gearSetting::ratio18_1, true);
+
+brain Brain;
+
+// Autonomous 模式
+void autonomous() { Brain.Screen.print("Autonomous Mode"); }
+
+// Driver Control 模式
+void usercontrol() {
+  while (1) {
+    int speed = Controller.Axis3.position();
+    int rotation = Controller.Axis4.position();
+    if (speed >= 0) {
+      left_front_motor.spin(directionType::fwd, speed, percentUnits::pct);
+      right_front_motor.spin(directionType::fwd, speed, percentUnits::pct);
+      left_back_motor.spin(directionType::fwd, speed, percentUnits::pct);
+      right_back_motor.spin(directionType::fwd, speed, percentUnits::pct);
+    }
+    vex::task::sleep(20);
+  }
+}
 
 int main() {
-  Brain.Screen.printAt(10, 50, "Hello V5");
-
-  while (1) {
-    // Allow other tasks to run
-    this_thread::sleep_for(10);
-  }
+  Competition.autonomous(autonomous);
+  Competition.drivercontrol(usercontrol);
+  return 0;
 }
