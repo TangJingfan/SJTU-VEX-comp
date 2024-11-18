@@ -17,18 +17,52 @@ motor right_back_motor(PORT4, gearSetting::ratio18_1, true);
 
 brain Brain;
 
-// Autonomous 模式
+// Autonomous mode
 void autonomous() { Brain.Screen.print("Autonomous Mode"); }
 
-// Driver Control 模式
+// Driver Control mode
 void usercontrol() {
   while (1) {
+    // get controller.axis value
+    // axis 3 for moving forward and backward
+    // axis 4 for turning left and right
     int speed = Controller.Axis3.position();
     int rotation = Controller.Axis4.position();
-    if (speed >= 0) {
-      drive_forward(left_front_motor, left_back_motor, right_front_motor,
-                    right_back_motor, speed);
+
+    // deadzone for improving sensitivity
+    const int deadzone = 10;
+
+    // determine what action motor should take
+    if (abs(speed) < deadzone && abs(rotation) < deadzone) {
+      // within deadzone, no movement
+      left_front_motor.stop(brakeType::brake);
+      right_front_motor.stop(brakeType::brake);
+      left_back_motor.stop(brakeType::brake);
+      right_back_motor.stop(brakeType::brake);
+    } else {
+      // not in deadzone
+      if (abs(speed) >= abs(rotation)) {
+        // forward or backward
+        if (speed > 0) {
+          drive_forward(left_front_motor, left_back_motor, right_front_motor,
+                        right_back_motor, speed);
+        } else {
+          drive_backward(left_front_motor, left_back_motor, right_front_motor,
+                         right_back_motor, -speed);
+        }
+      } else {
+        // turn left ot right
+        if (rotation > 0) {
+          turn_right(left_front_motor, left_back_motor, right_front_motor,
+                     right_back_motor, rotation);
+        } else {
+          turn_left(left_front_motor, left_back_motor, right_front_motor,
+                    right_back_motor, -rotation);
+        }
+      }
     }
+
+    // delay 20ms, in order
     vex::task::sleep(20);
   }
 }
