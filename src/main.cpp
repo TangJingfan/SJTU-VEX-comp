@@ -1,3 +1,4 @@
+#include "movement.h"
 #include "vex.h"
 
 using namespace vex;
@@ -25,10 +26,8 @@ void usercontrol() {
     int speed = Controller.Axis3.position();
     int rotation = Controller.Axis4.position();
     if (speed >= 0) {
-      left_front_motor.spin(directionType::fwd, speed, percentUnits::pct);
-      right_front_motor.spin(directionType::fwd, speed, percentUnits::pct);
-      left_back_motor.spin(directionType::fwd, speed, percentUnits::pct);
-      right_back_motor.spin(directionType::fwd, speed, percentUnits::pct);
+      drive_forward(left_front_motor, left_back_motor, right_front_motor,
+                    right_back_motor, speed);
     }
     vex::task::sleep(20);
   }
