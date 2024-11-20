@@ -61,8 +61,7 @@ void usercontrol() {
         }
       }
     }
-
-    // delay 20ms, in order
+    // delay 20ms, in order to keep every command clear to brain
     vex::task::sleep(20);
   }
 }
