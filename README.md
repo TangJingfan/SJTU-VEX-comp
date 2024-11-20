@@ -1,1 +1,0 @@
-# vex-in-school-comp
