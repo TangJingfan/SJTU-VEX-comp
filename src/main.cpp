@@ -11,8 +11,8 @@ controller Controller;
 
 // motor setup
 motor left_front_motor(PORT1, gearSetting::ratio18_1, false);
-motor right_front_motor(PORT2, gearSetting::ratio18_1, false);
-motor left_back_motor(PORT3, gearSetting::ratio18_1, true);
+motor right_front_motor(PORT2, gearSetting::ratio18_1, true);
+motor left_back_motor(PORT3, gearSetting::ratio18_1, false);
 motor right_back_motor(PORT4, gearSetting::ratio18_1, true);
 
 brain Brain;
@@ -61,8 +61,7 @@ void usercontrol() {
         }
       }
     }
-
-    // delay 20ms, in order
+    // delay 20ms, in order to keep every command clear to brain
     vex::task::sleep(20);
   }
 }
