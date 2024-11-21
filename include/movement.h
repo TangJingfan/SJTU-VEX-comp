@@ -12,8 +12,8 @@ void drive_backward(motor &left_front_motor, motor &left_back_motor,
 
 void turn_left(motor &left_front_motor, motor &left_back_motor,
                motor &right_front_motor, motor &right_back_motor,
-               const int voltage);
+               const int &voltage);
 
 void turn_right(motor &left_front_motor, motor &left_back_motor,
                 motor &right_front_motor, motor &right_back_motor,
-                const int voltage);
+                const int &voltage);
