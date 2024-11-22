@@ -15,16 +15,25 @@ motor right_front_motor(PORT2, gearSetting::ratio18_1, true);
 motor left_back_motor(PORT3, gearSetting::ratio18_1, false);
 motor right_back_motor(PORT4, gearSetting::ratio18_1, true);
 
+// inertial sensor setup
+inertial inertial_sensor(PORT5);
+
 // Brain for feedback
 brain Brain;
 
 // Autonomous mode
 void autonomous() {
+  // calibrate inertial seneor
+  inertial_sensor.calibrate();
+  while (inertial_sensor.isCalibrating()) {
+    vex::task::sleep(100);
+  }
+
   Brain.Screen.print("Autonomous Mode");
 
   // Example autonomous sequence
-  drive_forward(left_front_motor, left_back_motor, right_front_motor,
-                right_back_motor, 6000);
+  drive_forward_auto(left_front_motor, left_back_motor, right_front_motor,
+                     right_back_motor, 6000, inertial_sensor);
   task::sleep(2000);
   // Drive forward for 2 seconds
 

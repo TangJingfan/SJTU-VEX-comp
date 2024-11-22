@@ -6,6 +6,10 @@ void drive_forward(motor &left_front_motor, motor &left_back_motor,
                    motor &right_front_motor, motor &right_back_motor,
                    const int &voltage);
 
+void drive_forward_auto(motor &left_front_motor, motor &left_back_motor,
+                        motor &right_front_motor, motor &right_back_motor,
+                        const int &voltage, inertial &inertial_sensor);
+
 void drive_backward(motor &left_front_motor, motor &left_back_motor,
                     motor &right_front_motor, motor &right_back_motor,
                     const int &voltage);
