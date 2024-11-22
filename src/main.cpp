@@ -37,8 +37,8 @@ void autonomous() {
   task::sleep(2000);
   // Drive forward for 2 seconds
 
-  drive_backward(left_front_motor, left_back_motor, right_front_motor,
-                 right_back_motor, 6000);
+  drive_backward_auto(left_front_motor, left_back_motor, right_front_motor,
+                      right_back_motor, 6000, inertial_sensor);
   task::sleep(2000);
   // Drive backward for 2 seconds
 
@@ -92,20 +92,24 @@ void usercontrol() {
       if (abs(forward_backward_axis_value) >= abs(left_right_axis_value)) {
         // Forward or backward movement
         if (forward_backward_axis_value > 0) {
-          drive_forward(left_front_motor, left_back_motor, right_front_motor,
-                        right_back_motor, forward_backward_voltage);
+          drive_forward_control(left_front_motor, left_back_motor,
+                                right_front_motor, right_back_motor,
+                                forward_backward_voltage);
         } else {
-          drive_backward(left_front_motor, left_back_motor, right_front_motor,
-                         right_back_motor, -forward_backward_voltage);
+          drive_backward_control(left_front_motor, left_back_motor,
+                                 right_front_motor, right_back_motor,
+                                 -forward_backward_voltage);
         }
       } else {
         // Turning movement
         if (left_right_axis_value > 0) {
-          turn_right(left_front_motor, left_back_motor, right_front_motor,
-                     right_back_motor, left_right_voltage);
+          turn_right_control(left_front_motor, left_back_motor,
+                             right_front_motor, right_back_motor,
+                             left_right_voltage);
         } else {
-          turn_left(left_front_motor, left_back_motor, right_front_motor,
-                    right_back_motor, -left_right_voltage);
+          turn_left_control(left_front_motor, left_back_motor,
+                            right_front_motor, right_back_motor,
+                            -left_right_voltage);
         }
       }
     }
