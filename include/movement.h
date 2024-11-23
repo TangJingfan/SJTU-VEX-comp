@@ -2,36 +2,20 @@
 
 using namespace vex;
 
-void drive_forward_control(motor &left_front_motor, motor &left_back_motor,
-                           motor &right_front_motor, motor &right_back_motor,
-                           const int &voltage);
+void drive_forward_control(const double& voltage);
 
-void drive_forward_auto(motor &left_front_motor, motor &left_back_motor,
-                        motor &right_front_motor, motor &right_back_motor,
-                        const int &voltage, inertial &inertial_sensor);
+void drive_forward_auto(const double& voltage);
 
-void drive_backward_control(motor &left_front_motor, motor &left_back_motor,
-                            motor &right_front_motor, motor &right_back_motor,
-                            const int &voltage);
+void drive_backward_control(const double& voltage);
 
-void turn_left_control(motor &left_front_motor, motor &left_back_motor,
-                       motor &right_front_motor, motor &right_back_motor,
-                       const int &voltage);
+void turn_left_control(const double& voltage);
 
-void turn_right_control(motor &left_front_motor, motor &left_back_motor,
-                        motor &right_front_motor, motor &right_back_motor,
-                        const int &voltage);
+void turn_right_control(const double& voltage);
 
-void drive_backward_auto(motor &left_front_motor, motor &left_back_motor,
-                         motor &right_front_motor, motor &right_back_motor,
-                         const int &voltage, inertial &inertial_sensor);
+void drive_backward_auto(const double& voltage);
 
-void turn_left_auto_certain_degree(
-    motor &left_front_motor, motor &left_back_motor, motor &right_front_motor,
-    motor &right_back_motor, const double &voltage, inertial &inertial_sensor,
-    const double &target_degree);
+void turn_left_auto_certain_degree(double& voltage, const double& target_degree);
 
-void turn_right_auto_certain_degree(
-    motor &left_front_motor, motor &left_back_motor, motor &right_front_motor,
-    motor &right_back_motor, const double &voltage, inertial &inertial_sensor,
-    const double &target_degree);
+// void turn_right_auto_certain_degree(double& voltage, const double& target_degree);
+
+void stop(brakeType b_type);
