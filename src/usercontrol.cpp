@@ -41,7 +41,7 @@ void usercontrol() {
     // control part
     if (within_DEADZONE) {
       // Stop all motors if within the DEADZONE
-      stop(brake);
+      stop(coast);
     } else {
       // Determine movement based on joystick inputs
       if (fabs(forward_backward_axis_value) >= fabs(left_right_axis_value)) {
