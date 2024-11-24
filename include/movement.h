@@ -2,36 +2,20 @@
 
 using namespace vex;
 
-void drive_forward(motor &left_front_motor, motor &left_back_motor,
-                   motor &right_front_motor, motor &right_back_motor,
-                   int &speed) {
-  left_front_motor.spin(directionType::fwd, speed, percentUnits::pct);
-  right_front_motor.spin(directionType::fwd, speed, percentUnits::pct);
-  left_back_motor.spin(directionType::fwd, speed, percentUnits::pct);
-  right_back_motor.spin(directionType::fwd, speed, percentUnits::pct);
-}
+void drive_forward_control(const double& voltage);
 
-void drive_backward(motor &left_front_motor, motor &left_back_motor,
-                    motor &right_front_motor, motor &right_back_motor,
-                    int speed) {
-  left_front_motor.spin(directionType::rev, speed, percentUnits::pct);
-  right_front_motor.spin(directionType::rev, speed, percentUnits::pct);
-  left_back_motor.spin(directionType::rev, speed, percentUnits::pct);
-  right_back_motor.spin(directionType::rev, speed, percentUnits::pct);
-}
+void drive_forward_auto(const double& voltage);
 
-void turn_left(motor &left_front_motor, motor &left_back_motor,
-               motor &right_front_motor, motor &right_back_motor, int speed) {
-  left_front_motor.spin(directionType::rev, speed, percentUnits::pct);
-  right_front_motor.spin(directionType::fwd, speed, percentUnits::pct);
-  left_back_motor.spin(directionType::rev, speed, percentUnits::pct);
-  right_back_motor.spin(directionType::fwd, speed, percentUnits::pct);
-}
+void drive_backward_control(const double& voltage);
 
-void turn_right(motor &left_front_motor, motor &left_back_motor,
-                motor &right_front_motor, motor &right_back_motor, int speed) {
-  left_front_motor.spin(directionType::fwd, speed, percentUnits::pct);
-  right_front_motor.spin(directionType::rev, speed, percentUnits::pct);
-  left_back_motor.spin(directionType::fwd, speed, percentUnits::pct);
-  right_back_motor.spin(directionType::rev, speed, percentUnits::pct);
-}
+void turn_left_control(const double& voltage);
+
+void turn_right_control(const double& voltage);
+
+void drive_backward_auto(const double& voltage);
+
+void turn_left_auto_certain_degree(double& voltage, const double& target_degree);
+
+// void turn_right_auto_certain_degree(double& voltage, const double& target_degree);
+
+void stop(brakeType b_type);

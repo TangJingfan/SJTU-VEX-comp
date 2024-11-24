@@ -1,16 +1,16 @@
 {
 	"extension": {
-		"version": "0.6.0",
+		"version": "0.6.1",
 		"json": 2
 	},
 	"project": {
 		"name": "SJTU-VEX-comp",
 		"description": "This is team 1's code repo for SJTU VEX competition.",
-		"creationDate": "11/9/2024, 10:00:39 PM",
+		"creationDate": "Thu, 21 Nov 2024 13:15:15 GMT",
 		"platform": "V5",
 		"language": "cpp",
 		"slot": 1,
-		"sdkVersion": "V5_20240223_11_00_00",
+		"sdkVersion": "V5_20240802_15_00_00",
 		"cpp": {
 			"includePath": [],
 			"printf_float": true
