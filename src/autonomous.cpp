@@ -6,11 +6,12 @@ using namespace vex;
 
 void autonomous() {
 
-  inertial_sensor.calibrate();              //The robot must stay still
-  while(inertial_sensor.isCalibrating()){
-      Brain.Screen.clearScreen();
-      Brain.Screen.print("Inertial Calibrating");
-      wait(50, msec);
+  inertial_sensor.calibrate();
+  // The robot must stay still
+  while (inertial_sensor.isCalibrating()) {
+    Brain.Screen.clearScreen();
+    Brain.Screen.print("Inertial Calibrating");
+    wait(50, msec);
   }
   // Brain.Screen.setCursor(2, 5);
   // Brain.Screen.print("Autonomous Mode");
