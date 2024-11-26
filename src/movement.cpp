@@ -114,9 +114,137 @@ void turn_left_auto_certain_degree(double& voltage, const double& target_degree)
     }
 }
 
+void move_certain_distance(int tr_distance)         //Unit : mm (positive for forwards, negative for backwards)
+{
+    bool forward=false;
+    if(tr_distance>=0) {  forward=true; }
+    tr_distance=sqrt(tr_distance);
+  
+    double kP = 0.5;  
+    double kI = 0.01; 
+    double kD = 0.2;  
+
+    double error = 0;           
+    double previousError = 0;   
+    double integral = 0;        
+    double derivative = 0;      
+    
+    
+    double targetRotation = distance_to_degree(tr_distance); 
+    left_front_motor.resetPosition();
+    right_front_motor.resetPosition();
+    left_back_motor.resetPosition();
+    right_back_motor.resetPosition();
+  
+
+    // Time limit
+    double Time_limit=20.0;                               //set bigger to test the coefficient
+    vex::timer Timer;
+
+    while (Timer.time(sec) < Time_limit) 
+    {
+     
+        double Motor1Position = left_front_motor.position(degrees);
+        double Motor2Position = right_front_motor.position(degrees);
+        double Motor3Position = left_back_motor.position(degrees);
+        double Motor4Position = right_back_motor.position(degrees);
+
+        
+        double currentPosition = (Motor1Position + Motor2Position + Motor3Position + Motor4Position) / 4.0;
+        error = targetRotation - currentPosition;
+
+        
+        integral += error;                                 
+        derivative = error - previousError; 
+        if (sqrt(error) < 5) { break; }              
+        double voltage = kP * error + kI * integral + kD * derivative;
+        previousError = error;
+
+        
+        if(forward)
+        {
+            drive_forward_auto(voltage);
+        }
+        else
+        {
+            drive_backward_auto(voltage);
+        }
+        vex::task::sleep(20);
+    }
+    stop(brake);
+}
+
+
+
+void turn_certain_degree (int tr_degree)            //Unit : degree (positive for turn right, negative for left)
+{
+  bool right=false;
+  if(tr_degree>=0) {  right=true; }
+  tr_degree=sqrt(tr_degree)+inertial_sensor.heading();
+  
+  double kP = 0.5;  
+  double kI = 0.01; 
+  double kD = 0.2;  
+
+  double error = 0;           
+  double previousError = 0;   
+  double integral = 0;        
+  double derivative = 0;      
+    
+    
+  
+  left_front_motor.resetPosition();
+  right_front_motor.resetPosition();
+  left_back_motor.resetPosition();
+  right_back_motor.resetPosition();
+  
+
+  // Time limit
+  double Time_limit=20.0;                               //set bigger to test the coefficient
+  vex::timer Timer;
+
+    while (Timer.time(sec) <=Time_limit) 
+    {
+     
+        double current_angle=inertial_sensor.heading();
+        error = tr_degree - current_angle;
+    
+        
+        integral += error;                                 
+        derivative = error - previousError;
+        if (sqrt(error) < 1) { break; }               
+        double voltage = kP * error + kI * integral + kD * derivative;  
+        previousError = error;
+
+
+
+
+        if(right)
+        {
+          turn_right_control(voltage);
+        }
+        else
+        {
+          turn_left_control(voltage);
+        }
+        vex::task::sleep(20);
+    }
+    
+  stop(brake);
+}
+
+
 void stop(brakeType b_type) {
     left_front_motor.stop(b_type);
     right_front_motor.stop(b_type);
     left_back_motor.stop(b_type);
     right_back_motor.stop(b_type);
+}
+
+
+double distance_to_degree(double distance)   //Unit : mm
+{
+    double wheel_radius;                     //Unit : mm
+    double C=2.0*M_PI*wheel_radius;
+    return distance/C*360.0;
 }
