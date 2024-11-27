@@ -96,40 +96,22 @@ void drive_backward_auto(const double &voltage) {
   }
 }
 
-void turn_left_auto_certain_degree(double &voltage,
-                                   const double &target_degree) {
-  // get destination
-  double destination_degree = inertial_sensor.heading() + target_degree;
-  const double kp = 1.5;
-  while (true) {
-    // get current degree
-    double current_degree = inertial_sensor.heading();
-    double error = current_degree - destination_degree;
-    if (error > 180) {
-      error -= 360;
-    }
-    if (error < -180) {
-      error += 360;
-    }
-    double correction = error * kp;
-  }
-}
-
-void move_certain_distance(int tr_distance) // Unit : mm (positive for forwards,
-                                            // negative for backwards)
-{
+// Unit : mm (positive for forwards,
+// negative for backwards)
+void move_certain_distance(int tr_distance) {
   bool forward = false;
   if (tr_distance >= 0) {
     forward = true;
   }
   tr_distance = sqrt(tr_distance);
 
+  // need to be tested
   double kP = 0.5;
   double kI = 0.01;
   double kD = 0.2;
 
   double error = 0;
-  double previousError = 0;
+  double previous_error = 0;
   double integral = 0;
   double derivative = 0;
 
@@ -145,23 +127,23 @@ void move_certain_distance(int tr_distance) // Unit : mm (positive for forwards,
 
   while (Timer.time(sec) < Time_limit) {
 
-    double Motor1Position = left_front_motor.position(degrees);
-    double Motor2Position = right_front_motor.position(degrees);
-    double Motor3Position = left_back_motor.position(degrees);
-    double Motor4Position = right_back_motor.position(degrees);
+    double Motor1_position = left_front_motor.position(degrees);
+    double Motor2_position = right_front_motor.position(degrees);
+    double Motor3_position = left_back_motor.position(degrees);
+    double Motor4_position = right_back_motor.position(degrees);
 
-    double currentPosition =
-        (Motor1Position + Motor2Position + Motor3Position + Motor4Position) /
-        4.0;
-    error = targetRotation - currentPosition;
+    double current_position = (Motor1_position + Motor2_position +
+                               Motor3_position + Motor4_position) /
+                              4.0;
+    error = targetRotation - current_position;
 
     integral += error;
-    derivative = error - previousError;
+    derivative = error - previous_error;
     if (sqrt(error) < 5) {
       break;
     }
     double voltage = kP * error + kI * integral + kD * derivative;
-    previousError = error;
+    previous_error = error;
 
     if (forward) {
       drive_forward_auto(voltage);
@@ -182,6 +164,7 @@ void turn_certain_degree(int tr_degree)
   }
   tr_degree = sqrt(tr_degree) + inertial_sensor.heading();
 
+  // need to be tested
   double kP = 0.5;
   double kI = 0.01;
   double kD = 0.2;
@@ -197,7 +180,8 @@ void turn_certain_degree(int tr_degree)
   right_back_motor.resetPosition();
 
   // Time limit
-  double Time_limit = 20.0; // set bigger to test the coefficient
+  // set bigger to test the coefficient
+  double Time_limit = 20.0;
   vex::timer Timer;
 
   while (Timer.time(sec) <= Time_limit) {
