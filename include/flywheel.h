@@ -1,3 +1,6 @@
+#ifndef FLYWHEEL_H
+#define FLYWHEEL_H
+
 #include "vex.h"
 
 using namespace vex;
@@ -20,3 +23,5 @@ public:
 
   void stop();
 };
+
+#endif
