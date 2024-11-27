@@ -4,22 +4,43 @@
 
 using namespace vex;
 
-// two set of shooting ball control
-// one for soft red ball
-// one for hard blue ball
+Flywheel::Flywheel(vex::motor motor, double kp, double ki, double kd)
+    : flywheel(motor), target_voltage(0), kP(kp), kI(ki), kD(kd),
+      current_error(0), previous_error(0), integral(0), derivative(0) {};
 
-void shooting_blue_ball(bool whether_shoot) {
-  if (whether_shoot) {
-    flywheel.spin(directionType::fwd, 12000, voltageUnits::mV);
+void Flywheel::set_target_voltage(double voltage) { target_voltage = voltage; }
+
+void Flywheel::maintain_woltage() {
+  // get current voltage
+  double current_voltage = get_current_voltage();
+  // calculate error
+  current_error = current_voltage - target_voltage;
+  // calculate integral and derivative
+  integral += current_error;
+  derivative = current_error - previous_error;
+  // PID control
+  double voltage = kP * current_error + kI * integral + kD * derivative;
+  previous_error = current_error;
+  // set limit
+  if (voltage > 12000) {
+    voltage = 12000;
+  }
+  if (voltage < 0) {
+    voltage = 0;
+  }
+  // spin, maintain the voltage
+  flywheel.spin(vex::directionType::fwd, voltage, vex::voltageUnits::mV);
+}
+
+double Flywheel::get_current_voltage() {
+  double power = flywheel.power(vex::powerUnits::watt);
+  double current = flywheel.current(vex::currentUnits::amp);
+
+  if (current > 0) {
+    return power / current * 1000;
   } else {
-    flywheel.stop(brakeType::coast);
+    return 0;
   }
 }
 
-void shooting_red_ball(bool whether_shoot) {
-  if (whether_shoot) {
-    flywheel.spin(directionType::fwd, 12000, voltageUnits::mV);
-  } else {
-    flywheel.stop(brakeType::coast);
-  }
-}
+void Flywheel::stop() { flywheel.stop(coast); }

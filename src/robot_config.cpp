@@ -16,10 +16,10 @@ motor left_back_motor(PORT11, gearSetting::ratio18_1, false);
 motor right_back_motor(PORT4, gearSetting::ratio18_1, true);
 
 // Flywheel
-motor flywheel(PORT10, gearSetting::ratio18_1, false);
+motor flywheel_motor(PORT10, gearSetting::ratio18_1, false);
 
 // Intaker
-motor intaker(PORT15, gearSetting::ratio18_1, false);
+motor intaker_motor(PORT15, gearSetting::ratio18_1, false);
 
 // inertial sensor setup
 inertial inertial_sensor(PORT5);

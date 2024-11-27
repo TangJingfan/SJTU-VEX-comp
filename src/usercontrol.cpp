@@ -5,6 +5,9 @@
 
 using namespace vex;
 
+// kP, ki, kd need to be modified for different balls
+Flywheel flywheel(flywheel_motor, 0.5, 0.5, 0.5);
+
 void usercontrol() {
   // define DEADZONE to ignore small joystick inputs
   const double DEADZONE = 10.0;
@@ -64,7 +67,6 @@ void usercontrol() {
       }
     }
 
-    shooting_blue_ball(whether_shoot);
     // Delay for task scheduler
     vex::task::sleep(20);
   }
