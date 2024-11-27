@@ -16,6 +16,8 @@ extern motor right_back_motor;
 
 extern motor flywheel;
 
+extern motor intaker;
+
 extern inertial inertial_sensor;
 
 #endif
