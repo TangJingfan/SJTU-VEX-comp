@@ -1,3 +1,4 @@
+#include "flywheel.h"
 #include "movement.h"
 #include "robot_config.h"
 #include "vex.h"
@@ -17,6 +18,8 @@ void usercontrol() {
     // Get controller axis values
     double forward_backward_axis_value = Controller.Axis3.position();
     double left_right_axis_value = Controller.Axis4.position();
+    // Get button information
+    bool whether_shoot = Controller.ButtonL1.pressing();
 
     // Scale axis values to motor voltage
     double forward_backward_voltage;
@@ -61,6 +64,7 @@ void usercontrol() {
       }
     }
 
+    shooting_blue_ball(whether_shoot);
     // Delay for task scheduler
     vex::task::sleep(20);
   }
