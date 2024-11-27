@@ -152,7 +152,7 @@ void move_certain_distance(int tr_distance) {
     }
     vex::task::sleep(20);
   }
-  stop(brake);
+  stop(coast);
 }
 
 void turn_certain_degree(int tr_degree)
@@ -170,7 +170,7 @@ void turn_certain_degree(int tr_degree)
   double kD = 0.2;
 
   double error = 0;
-  double previousError = 0;
+  double previous_error = 0;
   double integral = 0;
   double derivative = 0;
 
@@ -190,12 +190,12 @@ void turn_certain_degree(int tr_degree)
     error = tr_degree - current_angle;
 
     integral += error;
-    derivative = error - previousError;
+    derivative = error - previous_error;
     if (sqrt(error) < 1) {
       break;
     }
     double voltage = kP * error + kI * integral + kD * derivative;
-    previousError = error;
+    previous_error = error;
 
     if (right) {
       turn_right_control(voltage);
@@ -205,7 +205,7 @@ void turn_certain_degree(int tr_degree)
     vex::task::sleep(20);
   }
 
-  stop(brake);
+  stop(coast);
 }
 
 void stop(brakeType b_type) {
@@ -215,8 +215,8 @@ void stop(brakeType b_type) {
   right_back_motor.stop(b_type);
 }
 
-double distance_to_degree(double distance) // Unit : mm
-{
+// Unit : mm
+double distance_to_degree(double distance) {
   double wheel_radius; // Unit : mm
   double C = 2.0 * M_PI * wheel_radius;
   return distance / C * 360.0;
