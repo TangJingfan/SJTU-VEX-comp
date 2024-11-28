@@ -17,7 +17,7 @@ public:
 
   void set_target_voltage(double voltage);
 
-  void maintain_woltage();
+  void maintain_voltage();
 
   double get_current_voltage();
 
