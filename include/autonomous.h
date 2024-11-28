@@ -9,4 +9,6 @@
 
 void autonomous();
 
+extern Flywheel flywheel;
+
 #endif

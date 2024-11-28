@@ -21,6 +21,9 @@ void usercontrol() {
     double left_right_axis_value = Controller.Axis4.position();
     // Get button information
     bool whether_shoot = Controller.ButtonL1.pressing();
+    bool whether_intake = Controller.ButtonR1.pressing();
+
+
 
     // Scale axis values to motor voltage
     double forward_backward_voltage;
@@ -64,6 +67,33 @@ void usercontrol() {
         }
       }
     }
+
+    //intake  (keep pressing R1 button)
+    if(whether_intake)
+    {
+      intake(MAXMOTOR_VOL);
+    }
+    else
+    {
+      stop_intake();
+    }
+
+
+
+    //shoot   (keep pressing L1 button)
+    if(whether_shoot)
+    {
+      flywheel.set_target_voltage(10000);
+      flywheel.maintain_woltage();
+    }
+    else
+    {
+      flywheel.stop();
+    }
+
+
+
+
 
     // Delay for task scheduler
     vex::task::sleep(20);

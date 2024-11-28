@@ -8,6 +8,10 @@ using namespace vex;
 
 int main() {
 
+    //define flywheel
+    Flywheel flywheel(flywheel_motor,0.1,0.02,0.01);
+    
+    
     // calibrate inertial seneor
 
     Brain.Screen.setCursor(1, 1);
