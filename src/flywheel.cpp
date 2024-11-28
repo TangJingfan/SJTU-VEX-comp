@@ -22,8 +22,8 @@ void Flywheel::maintain_woltage() {
   double voltage = kP * current_error + kI * integral + kD * derivative;
   previous_error = current_error;
   // set limit
-  if (voltage > 12000) {
-    voltage = 12000;
+  if (voltage > MAXMOTOR_VOL) {
+    voltage = MAXMOTOR_VOL;
   }
   if (voltage < 0) {
     voltage = 0;
