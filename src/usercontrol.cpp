@@ -2,9 +2,6 @@
 
 using namespace vex;
 
-// kP, ki, kd need to be modified for different balls
-Flywheel flywheel(flywheel_motor, 0.5, 0.5, 0.5);
-
 void usercontrol() {
   // define DEADZONE to ignore small joystick inputs
   const double DEADZONE = 10.0;
@@ -65,14 +62,14 @@ void usercontrol() {
       }
     }
 
-    // intake  (keep pressing R1 button)
+    // intake (keep pressing R1 button)
     if (whether_intake) {
       intake(MAXMOTOR_VOL);
     } else {
       stop_intake();
     }
 
-    // shoot   (keep pressing L1 button)
+    // shoot (keep pressing L1 button)
     if (whether_shoot) {
       flywheel.set_target_voltage(10000);
       flywheel.maintain_voltage();

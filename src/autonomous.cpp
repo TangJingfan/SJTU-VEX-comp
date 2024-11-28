@@ -1,6 +1,5 @@
 #include "autonomous.h"
 
-
 using namespace vex;
 
 void autonomous() {
@@ -19,5 +18,4 @@ void autonomous() {
 
   // Brain.Screen.setCursor(2, 6);
   // Brain.Screen.print("Autonomous complete");
-
 }

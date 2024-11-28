@@ -1,11 +1,12 @@
 #ifndef AUTONOUMOUS_H
 #define AUTONOUMOUS_H
 
-#include "robot_config.h"
-#include "movement.h"
 #include "flywheel.h"
 #include "intaker.h"
-#include "lifter.h"
+#include "movement.h"
+#include "robot_config.h"
+
+using namespace vex;
 
 void autonomous();
 

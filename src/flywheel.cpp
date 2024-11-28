@@ -4,7 +4,7 @@ using namespace vex;
 
 Flywheel::Flywheel(vex::motor motor, double kp, double ki, double kd)
     : flywheel(motor), target_voltage(0), kP(kp), kI(ki), kD(kd),
-      current_error(0), previous_error(0), integral(0), derivative(0){};
+      current_error(0), previous_error(0), integral(0), derivative(0) {};
 
 void Flywheel::set_target_voltage(double voltage) { target_voltage = voltage; }
 
@@ -31,9 +31,10 @@ void Flywheel::maintain_voltage() {
 }
 
 double Flywheel::get_current_voltage() {
+  // get power and current, then calculate voltage
   double power = flywheel.power(vex::powerUnits::watt);
   double current = flywheel.current(vex::currentUnits::amp);
-
+  // deal with extreme values
   if (current > 0) {
     return power / current * 1000;
   } else {
