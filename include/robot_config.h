@@ -3,6 +3,11 @@
 
 #include "vex.h"
 
+const int MAXMOTOR_VOL=12000;             //set max voltage for motor is 12000mv
+
+
+
+
 using namespace vex;
 
 extern competition Competition;

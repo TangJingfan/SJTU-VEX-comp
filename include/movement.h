@@ -1,3 +1,7 @@
+#ifndef MOVEMENT_H
+#define MOVEMENT_H
+
+
 #include <vex.h>
 
 using namespace vex;
@@ -21,3 +25,6 @@ void move_certain_distance(int tr_distance);
 void turn_certain_degree(int tr_degree);
 
 double distance_to_degree(double distance);
+
+
+#endif

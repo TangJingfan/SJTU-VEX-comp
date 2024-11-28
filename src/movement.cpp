@@ -143,6 +143,9 @@ void move_certain_distance(int tr_distance) {
       break;
     }
     double voltage = kP * error + kI * integral + kD * derivative;
+    if(sqrt(voltage)>MAXMOTOR_VOL) {
+      voltage=MAXMOTOR_VOL;
+    }
     previous_error = error;
 
     if (forward) {
@@ -195,6 +198,9 @@ void turn_certain_degree(int tr_degree)
       break;
     }
     double voltage = kP * error + kI * integral + kD * derivative;
+    if(sqrt(voltage)>MAXMOTOR_VOL) {
+      voltage=MAXMOTOR_VOL;
+    }
     previous_error = error;
 
     if (right) {
