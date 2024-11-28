@@ -142,7 +142,11 @@ void move_certain_distance(int tr_distance) {
       break;
     }
     double voltage = kP * error + kI * integral + kD * derivative;
+<<<<<<< HEAD
     if(sqrt(voltage) > MAXMOTOR_VOL) {
+=======
+    if (sqrt(voltage) > MAXMOTOR_VOL) {
+>>>>>>> 248b4edf33fbf28982584314a99d0a9e9ca9869c
       voltage = MAXMOTOR_VOL;
     }
     previous_error = error;
@@ -197,7 +201,11 @@ void turn_certain_degree(int tr_degree)
       break;
     }
     double voltage = kP * error + kI * integral + kD * derivative;
+<<<<<<< HEAD
     if(sqrt(voltage) > MAXMOTOR_VOL) {
+=======
+    if (sqrt(voltage) > MAXMOTOR_VOL) {
+>>>>>>> 248b4edf33fbf28982584314a99d0a9e9ca9869c
       voltage = MAXMOTOR_VOL;
     }
     previous_error = error;
@@ -223,7 +231,11 @@ void stop(brakeType b_type) {
 // Unit : mm
 double distance_to_degree(double distance) {
   // Unit : mm
+<<<<<<< HEAD
   double wheel_radius; 
+=======
+  double wheel_radius;
+>>>>>>> 248b4edf33fbf28982584314a99d0a9e9ca9869c
   double C = 2.0 * M_PI * wheel_radius;
   return distance / C * 360.0;
 }
