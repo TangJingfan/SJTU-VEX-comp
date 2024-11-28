@@ -16,7 +16,7 @@ int main() {
 
     Brain.Screen.setCursor(1, 1);
     Brain.Screen.print("Calibrating Inertial Sensor");
-    inertial_sensor.calibrate();
+    inertial_sensor.calibrate(3);
     while (inertial_sensor.isCalibrating()) {
         vex::task::sleep(100);
     }
