@@ -3,8 +3,8 @@
 
 #include "vex.h"
 
-const int MAXMOTOR_VOL=12000;             //set max voltage for motor is 12000mv
-
+//set max voltage for motor is 12000mv
+const int MAXMOTOR_VOL=12000;           
 
 
 

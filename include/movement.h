@@ -1,8 +1,7 @@
 #ifndef MOVEMENT_H
 #define MOVEMENT_H
 
-
-#include <vex.h>
+#include "robot_config.h"
 
 using namespace vex;
 

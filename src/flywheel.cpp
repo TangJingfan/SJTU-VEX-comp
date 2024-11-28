@@ -1,6 +1,5 @@
 #include "flywheel.h"
-#include "robot_config.h"
-#include "vex.h"
+
 
 using namespace vex;
 
@@ -22,8 +21,8 @@ void Flywheel::maintain_woltage() {
   double voltage = kP * current_error + kI * integral + kD * derivative;
   previous_error = current_error;
   // set limit
-  if (voltage > 12000) {
-    voltage = 12000;
+  if (voltage > MAXMOTOR_VOL) {
+    voltage = MAXMOTOR_VOL;
   }
   if (voltage < 0) {
     voltage = 0;

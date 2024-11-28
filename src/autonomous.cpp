@@ -1,6 +1,5 @@
-#include "movement.h"
-#include "robot_config.h"
-#include "vex.h"
+#include "autonomous.h"
+
 
 using namespace vex;
 

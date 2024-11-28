@@ -1,7 +1,7 @@
 #ifndef FLYWHEEL_H
 #define FLYWHEEL_H
 
-#include "vex.h"
+#include "robot_config.h"
 
 using namespace vex;
 

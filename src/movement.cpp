@@ -1,6 +1,5 @@
 #include "movement.h"
-#include "robot_config.h"
-#include <vex.h>
+
 
 using namespace vex;
 
@@ -143,8 +142,8 @@ void move_certain_distance(int tr_distance) {
       break;
     }
     double voltage = kP * error + kI * integral + kD * derivative;
-    if(sqrt(voltage)>MAXMOTOR_VOL) {
-      voltage=MAXMOTOR_VOL;
+    if(sqrt(voltage) > MAXMOTOR_VOL) {
+      voltage = MAXMOTOR_VOL;
     }
     previous_error = error;
 
@@ -198,8 +197,8 @@ void turn_certain_degree(int tr_degree)
       break;
     }
     double voltage = kP * error + kI * integral + kD * derivative;
-    if(sqrt(voltage)>MAXMOTOR_VOL) {
-      voltage=MAXMOTOR_VOL;
+    if(sqrt(voltage) > MAXMOTOR_VOL) {
+      voltage = MAXMOTOR_VOL;
     }
     previous_error = error;
 
@@ -223,7 +222,8 @@ void stop(brakeType b_type) {
 
 // Unit : mm
 double distance_to_degree(double distance) {
-  double wheel_radius; // Unit : mm
+  // Unit : mm
+  double wheel_radius; 
   double C = 2.0 * M_PI * wheel_radius;
   return distance / C * 360.0;
 }
