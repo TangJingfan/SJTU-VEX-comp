@@ -1,6 +1,5 @@
 #include "movement.h"
 
-
 using namespace vex;
 
 void drive_forward_control(const double &voltage) {
