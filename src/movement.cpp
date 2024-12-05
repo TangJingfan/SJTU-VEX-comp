@@ -101,12 +101,12 @@ void move_certain_distance(int tr_distance) {
   if (tr_distance >= 0) {
     forward = true;
   }
-  tr_distance = sqrt(tr_distance);
+  tr_distance = abs(tr_distance);
 
   // need to be tested
   double kP = 0.5;
-  double kI = 0.01;
-  double kD = 0.2;
+  double kI = 0.0;
+  double kD = 0.0;
 
   double error = 0;
   double previous_error = 0;
@@ -159,16 +159,18 @@ void move_certain_distance(int tr_distance) {
 void turn_certain_degree(int tr_degree)
 // Unit : degree (positive for turn right, negative for left)
 {
+
   bool right = false;
   if (tr_degree >= 0) {
     right = true;
   }
-  tr_degree = sqrt(tr_degree) + inertial_sensor.heading();
+  tr_degree = abs(tr_degree) + inertial_sensor.heading();
+  Brain.Screen.print("Current Angle: %f", inertial_sensor.heading());
 
   // need to be tested
-  double kP = 0.5;
-  double kI = 0.01;
-  double kD = 0.2;
+  double kP = 90;
+  double kI = 1;
+  double kD = 0.0;
 
   double error = 0;
   double previous_error = 0;
@@ -186,18 +188,25 @@ void turn_certain_degree(int tr_degree)
   vex::timer Timer;
 
   while (Timer.time(sec) <= Time_limit) {
+    Brain.Screen.print("Current Angle: %f", inertial_sensor.heading());
 
-    double current_angle = inertial_sensor.heading();
+    double current_angle;
+    if (right) {
+      current_angle = inertial_sensor.heading();
+    } else {
+      current_angle = 360 - inertial_sensor.heading();
+    }
+
     error = tr_degree - current_angle;
 
     integral += error;
     derivative = error - previous_error;
-    if (sqrt(error) < 1) {
+    if (abs(error) < 0.01 * tr_degree) {
       break;
     }
     double voltage = kP * error + kI * integral + kD * derivative;
-    if (sqrt(voltage) > MAXMOTOR_VOL) {
-      voltage = MAXMOTOR_VOL;
+    if (abs(voltage) > MAXMOTOR_VOL) {
+      voltage = 6000;
     }
     previous_error = error;
 
@@ -209,7 +218,7 @@ void turn_certain_degree(int tr_degree)
     vex::task::sleep(20);
   }
 
-  stop(coast);
+  stop(brake);
 }
 
 void stop(brakeType b_type) {
@@ -222,7 +231,7 @@ void stop(brakeType b_type) {
 // Unit : mm
 double distance_to_degree(double distance) {
   // Unit : mm
-  double wheel_radius;
+  double wheel_radius = 20;
   double C = 2.0 * M_PI * wheel_radius;
   return distance / C * 360.0;
 }

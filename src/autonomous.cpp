@@ -4,6 +4,10 @@ using namespace vex;
 
 void autonomous() {
 
+  turn_certain_degree(180);
+  while (1) {
+  }
+
   // Brain.Screen.setCursor(2, 5);
   // Brain.Screen.print("Autonomous Mode");
 

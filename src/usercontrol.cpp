@@ -8,7 +8,7 @@ void usercontrol() {
   // Threshold for small value
   const double threshold_for_movement = 20.0;
   // voltage const
-  const double max_voltage = 8000.0;
+  const double max_voltage = 6000.0;
   const double min_voltage = 2400.0;
 
   while (true) {
@@ -62,13 +62,11 @@ void usercontrol() {
       }
     }
 
-    // intake and transmit  (keep pressing R1 button)
+    // intake (keep pressing R1 button)
     if (whether_intake) {
       intake(MAXMOTOR_VOL);
-      transmit(MAXMOTOR_VOL);
     } else {
       stop_intake();
-      stop_transmit();
     }
 
     // shoot (keep pressing L1 button)
