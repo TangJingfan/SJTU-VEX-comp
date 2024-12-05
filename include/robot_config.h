@@ -20,6 +20,8 @@ extern motor flywheel_motor;
 
 extern motor intaker_motor;
 
+extern motor transmitter_motor;
+
 extern inertial inertial_sensor;
 
 #endif

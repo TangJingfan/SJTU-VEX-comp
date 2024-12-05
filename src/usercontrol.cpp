@@ -65,11 +65,13 @@ void usercontrol() {
       }
     }
 
-    // intake  (keep pressing R1 button)
+    // intake and transmit  (keep pressing R1 button)
     if (whether_intake) {
       intake(MAXMOTOR_VOL);
+      transmit(MAXMOTOR_VOL);
     } else {
       stop_intake();
+      stop_transmit();
     }
 
     // shoot   (keep pressing L1 button)

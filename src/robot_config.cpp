@@ -21,6 +21,9 @@ motor flywheel_motor(PORT10, gearSetting::ratio18_1, false);
 // Intaker
 motor intaker_motor(PORT15, gearSetting::ratio18_1, false);
 
+// Transmitter
+motor transmitter_motor(PORT16, gearSetting::ratio18_1, false);
+
 // inertial sensor setup
 inertial inertial_sensor(PORT5);
 

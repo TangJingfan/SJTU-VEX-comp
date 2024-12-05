@@ -5,7 +5,7 @@
 #include "movement.h"
 #include "flywheel.h"
 #include "intaker.h"
-#include "lifter.h"
+#include "transmitter.h"
 
 void autonomous();
 
