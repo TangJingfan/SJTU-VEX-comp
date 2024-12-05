@@ -8,7 +8,7 @@ void usercontrol() {
   // Threshold for small value
   const double threshold_for_movement = 20.0;
   // voltage const
-  const double max_voltage = 12000.0;
+  const double max_voltage = 8000.0;
   const double min_voltage = 2400.0;
 
   while (true) {
