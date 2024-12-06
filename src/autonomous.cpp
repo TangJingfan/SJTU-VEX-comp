@@ -4,11 +4,12 @@ using namespace vex;
 
 void autonomous() {
 
-  move_certain_distance(500);
-  while(1)
-  {
-
+  turn_certain_degree(180);
+  while (1) {
+    // allow other tasks to run
+    this_thread::sleep_for(10);
   }
+
   // Brain.Screen.setCursor(2, 5);
   // Brain.Screen.print("Autonomous Mode");
 
