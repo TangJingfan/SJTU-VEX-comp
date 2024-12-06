@@ -12,7 +12,7 @@ void Flywheel::maintain_voltage() {
     // get current voltage
     double current_voltage = get_current_voltage();
     // calculate error
-    current_error = current_voltage - target_voltage;
+    current_error = target_voltage - current_voltage;
     // calculate integral and derivative
     integral += current_error;
     derivative = current_error - previous_error;
