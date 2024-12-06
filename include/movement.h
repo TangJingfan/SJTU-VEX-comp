@@ -25,5 +25,7 @@ void turn_certain_degree(int tr_degree);
 
 double distance_to_degree(double distance);
 
+double abs_value(double num);
+
 
 #endif

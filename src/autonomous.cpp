@@ -4,6 +4,20 @@ using namespace vex;
 
 void autonomous() {
 
+  turn_certain_degree(-90);
+  task::sleep(100);
+  turn_certain_degree(90);
+  task::sleep(100);
+  turn_certain_degree(90);
+  task::sleep(100);
+  turn_certain_degree(90);
+  task::sleep(100);
+  turn_certain_degree(90);
+  while (1) {
+    // allow other tasks to run
+    this_thread::sleep_for(10);
+  }
+
   // Brain.Screen.setCursor(2, 5);
   // Brain.Screen.print("Autonomous Mode");
 
