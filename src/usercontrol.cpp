@@ -115,20 +115,6 @@ void usercontrol() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         // intake (keep pressing R1 button)
         if (whether_intake) {
             intake(MAXMOTOR_VOL);

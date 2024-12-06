@@ -4,24 +4,39 @@ using namespace vex;
 
 void autonomous() {
 
- 
+  //Left rot
+
+
+  //first push ball into circle
+  move_certain_forward_distance(1219.2,6000);
+  turn_right_certain_degree(30,4000);
+  move_certain_backward_distance(800,6000);
+
+
+  //then move to the other balls and shoot them
+
+
+
+
+
+
+
+
+
+
+  //right rot
+
+
+
+
+
+
+
+
+
   while (1) {
     // allow other tasks to run
     this_thread::sleep_for(10);
   }
 
-  // Brain.Screen.setCursor(2, 5);
-  // Brain.Screen.print("Autonomous Mode");
-
-  // // Example autonomous sequence
-  // drive_forward_auto(6000);
-  // task::sleep(2000);
-  // // Drive forward for 2 seconds
-
-  // drive_backward_auto(6000);
-  // task::sleep(2000);
-  // // Drive backward for 2 seconds
-
-  // Brain.Screen.setCursor(2, 6);
-  // Brain.Screen.print("Autonomous complete");
 }

@@ -2,7 +2,6 @@
 
 using namespace vex;
 
-const int max_voltage_for_auto=4000;
 
 void drive_forward_control(const double& voltage) {
     left_front_motor.spin(directionType::fwd, voltage, voltageUnits::mV);
@@ -93,7 +92,7 @@ void drive_backward_auto(const double& voltage, double target_angle) {
 }
 
 // Unit : mm 
-void move_certain_forward_distance(int tr_distance) {
+void move_certain_forward_distance(double tr_distance, double max_voltage) {
     // need to be tested
     double kP = 50;
     double kI = 0.0;
@@ -137,8 +136,8 @@ void move_certain_forward_distance(int tr_distance) {
             break;
         }
         double voltage = kP * error + kI * integral + kD * derivative;
-        if (abs_value(voltage) > max_voltage_for_auto) {
-            voltage = max_voltage_for_auto;
+        if (abs_value(voltage) > max_voltage) {
+            voltage = max_voltage;
         }
         previous_error = error;
 
@@ -148,7 +147,7 @@ void move_certain_forward_distance(int tr_distance) {
     stop(coast);
 }
 
-void move_certain_backward_distance(int tr_distance){
+void move_certain_backward_distance(double tr_distance, double max_voltage){
     // need to be tested
     double kP = 50;
     double kI = 0.0;
@@ -192,8 +191,8 @@ void move_certain_backward_distance(int tr_distance){
             break;
         }
         double voltage = kP * error + kI * integral + kD * derivative;
-        if (abs_value(voltage) > max_voltage_for_auto) {
-            voltage = max_voltage_for_auto;
+        if (abs_value(voltage) > max_voltage) {
+            voltage = max_voltage;
         }
         previous_error = error;
 
@@ -204,7 +203,8 @@ void move_certain_backward_distance(int tr_distance){
 
 }
 
-void turn_right_certain_degree(int tr_degree)
+//normally max_voltage set 4000
+void turn_right_certain_degree(double tr_degree, double max_voltage)
 {
     inertial_sensor.resetRotation();
     
@@ -244,8 +244,8 @@ void turn_right_certain_degree(int tr_degree)
             break;
         } 
         double voltage = kP * error + kI * integral + kD * derivative;
-        if (abs_value(voltage) > max_voltage_for_auto) {
-            voltage = max_voltage_for_auto;
+        if (abs_value(voltage) > max_voltage) {
+            voltage = max_voltage;
         }
         previous_error = error;
 
@@ -258,7 +258,7 @@ void turn_right_certain_degree(int tr_degree)
     stop(coast);
 }
 
-void turn_left_certain_degree(int tr_degree)
+void turn_left_certain_degree(double tr_degree,double max_voltage)
 {
     inertial_sensor.resetRotation();
     
@@ -298,8 +298,8 @@ void turn_left_certain_degree(int tr_degree)
             break;
         } 
         double voltage = kP * error + kI * integral + kD * derivative;
-        if (abs_value(voltage) > max_voltage_for_auto) {
-            voltage = max_voltage_for_auto;
+        if (abs_value(voltage) > max_voltage) {
+            voltage = max_voltage;
         }
         previous_error = error;
 
