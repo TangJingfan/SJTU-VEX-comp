@@ -92,15 +92,8 @@ void drive_backward_auto(const double& voltage, double target_angle) {
     
 }
 
-// Unit : mm (positive for forwards,
-// negative for backwards)
-void move_certain_distance(int tr_distance) {
-    bool forward = false;
-    if (tr_distance >= 0) {
-        forward = true;
-    }
-    tr_distance = abs_value(tr_distance);
-
+// Unit : mm 
+void move_certain_forward_distance(int tr_distance) {
     // need to be tested
     double kP = 50;
     double kI = 0.0;
@@ -149,14 +142,66 @@ void move_certain_distance(int tr_distance) {
         }
         previous_error = error;
 
-        if (forward) {
-            drive_forward_auto(voltage,angle);
-        } else {
-            drive_backward_auto(voltage,angle);
-        }
+        drive_forward_auto(voltage,angle);
         vex::task::sleep(20);
     }
     stop(coast);
+}
+
+void move_certain_backward_distance(int tr_distance){
+    // need to be tested
+    double kP = 50;
+    double kI = 0.0;
+    double kD = 0.0;
+
+    double error = 0;
+    double previous_error = 0;
+    double integral = 0;
+    double derivative = 0;
+
+    double targetRotation = distance_to_degree(tr_distance);
+    left_front_motor.resetPosition();
+    right_front_motor.resetPosition();
+    left_back_motor.resetPosition();
+    right_back_motor.resetPosition();
+
+
+    //set current angle to move straight
+    inertial_sensor.resetRotation();
+    double angle=inertial_sensor.rotation();
+
+
+    // Time limit
+    double Time_limit = 20.0; // set bigger to test the coefficient
+    vex::timer Timer;
+
+    while (Timer.time(sec) < Time_limit) {
+
+        double Motor1_position = left_front_motor.position(degrees);
+        double Motor2_position = right_front_motor.position(degrees);
+        double Motor3_position = left_back_motor.position(degrees);
+        double Motor4_position = right_back_motor.position(degrees);
+
+        double current_position =
+            (Motor1_position + Motor2_position + Motor3_position + Motor4_position) / 4.0;
+        error = targetRotation + current_position;
+
+        integral += error;
+        derivative = error - previous_error;
+        if (abs_value(error) < 5) {
+            break;
+        }
+        double voltage = kP * error + kI * integral + kD * derivative;
+        if (abs_value(voltage) > max_voltage_for_auto) {
+            voltage = max_voltage_for_auto;
+        }
+        previous_error = error;
+
+        drive_backward_auto(voltage,angle);
+        vex::task::sleep(20);
+    }
+    stop(coast);
+
 }
 
 void turn_right_certain_degree(int tr_degree)
