@@ -132,7 +132,7 @@ void move_certain_forward_distance(double tr_distance, double max_voltage) {
 
         integral += error;
         derivative = error - previous_error;
-        if (abs_value(error) < 5) {
+        if (abs_value(error) < 10) {
             break;
         }
         double voltage = kP * error + kI * integral + kD * derivative;
@@ -226,7 +226,7 @@ void turn_right_certain_degree(double tr_degree, double max_voltage)
 
     // Time limit
     // set bigger to test the coefficient
-    double Time_limit = 20.0;
+    double Time_limit = 1.5;
     vex::timer Timer;
     double current_angle;
     while (Timer.time(sec) <= Time_limit) {
@@ -240,7 +240,7 @@ void turn_right_certain_degree(double tr_degree, double max_voltage)
 
         integral += error;
         derivative = error - previous_error;
-         if (abs_value(error)<5 ) {
+         if (abs_value(error)<8 ) {
             break;
         } 
         double voltage = kP * error + kI * integral + kD * derivative;
@@ -280,7 +280,7 @@ void turn_left_certain_degree(double tr_degree,double max_voltage)
 
     // Time limit
     // set bigger to test the coefficient
-    double Time_limit = 20.0;
+    double Time_limit = 1.5;
     vex::timer Timer;
     double current_angle;
     while (Timer.time(sec) <= Time_limit) {
@@ -294,7 +294,7 @@ void turn_left_certain_degree(double tr_degree,double max_voltage)
 
         integral += error;
         derivative = error - previous_error;
-         if (abs_value(error)<5 ) {
+         if (abs_value(error)<8 ) {
             break;
         } 
         double voltage = kP * error + kI * integral + kD * derivative;
