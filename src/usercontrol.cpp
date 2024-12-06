@@ -25,15 +25,15 @@ void usercontrol() {
 
 
         // Get button information
-        bool whether_shoot = Controller.ButtonL2.pressing();
+        bool whether_shoot = Controller.ButtonL1.pressing();
         bool whether_intake = Controller.ButtonR1.pressing();
-        bool whether_transmit = Controller.ButtonL1.pressing();
+
         // Scale axis values to motor voltage
         double forward_backward_voltage = 0;
         double left_right_voltage = 0;
         // Scale axis values to motor voltage
 
-        if (whether_rev) {
+        if (!whether_rev) {
             if ((forward_backward_axis_value_fwd > DEADZONE &&
             forward_backward_axis_value_fwd < threshold_for_movement) ) {
                 forward_backward_voltage = min_voltage;
@@ -96,27 +96,21 @@ void usercontrol() {
 
         // intake (keep pressing R1 button)
         if (whether_intake) {
-            intake(8000);
-        } else {
-            stop_intake();
-        }
-
-        // transmit (keep pressing L1 button)
-        if (whether_transmit) {
+            intake(MAXMOTOR_VOL);
             transmit(MAXMOTOR_VOL);
         } else {
+            stop_intake();
             stop_transmit();
         }
 
-
-        // shoot (keep pressing L2 button)
-        if(whether_shoot){
-            // flywheel.set_target_voltage(MAXMOTOR_VOL);
-            flywheel_motor.spin(directionType::fwd, 8000, voltageUnits::mV);
+        // shoot (keep pressing L1 button)
+        if (whether_shoot) {
+            flywheel.set_target_voltage(MAXMOTOR_VOL);
         } else {
             // flywheel.stop();
             flywheel.set_target_voltage(0);
         }
+
         // Delay for task scheduler
         vex::task::sleep(20);
     }
