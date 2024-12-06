@@ -1,4 +1,5 @@
 #include "flywheel.h"
+#include <iostream>
 
 using namespace vex;
 
@@ -9,25 +10,29 @@ Flywheel::Flywheel(vex::motor motor, double kp, double ki, double kd)
 void Flywheel::set_target_voltage(double voltage) { target_voltage = voltage; }
 
 void Flywheel::maintain_voltage() {
-    // get current voltage
-    double current_voltage = get_current_voltage();
-    // calculate error
-    current_error = target_voltage - current_voltage;
-    // calculate integral and derivative
-    integral += current_error;
-    derivative = current_error - previous_error;
-    // PID control
-    double voltage = kP * current_error + kI * integral + kD * derivative;
-    previous_error = current_error;
-    // set limit
-    if (voltage > MAXMOTOR_VOL) {
-        voltage = MAXMOTOR_VOL;
+    while (true) {
+        // get current voltage
+        double current_voltage = get_current_voltage();
+        // calculate error
+        current_error = target_voltage - current_voltage;
+        // calculate integral and derivative
+        integral += current_error;
+        derivative = current_error - previous_error;
+        // PID control
+        double voltage = kP * current_error + kI * integral + kD * derivative;
+        previous_error = current_error;
+        // set limit
+        if (voltage > MAXMOTOR_VOL) {
+            voltage = MAXMOTOR_VOL;
+        }
+        if (voltage <= 0) {
+            voltage = 0;
+        }
+        // spin, maintain the voltage
+        std::cout << "voltage: " << voltage << std::endl;
+        flywheel.spin(vex::directionType::fwd, voltage, vex::voltageUnits::mV);
+        this_thread::sleep_for(10);
     }
-    if (voltage < 0) {
-        voltage = 0;
-    }
-    // spin, maintain the voltage
-    flywheel.spin(vex::directionType::fwd, voltage, vex::voltageUnits::mV);
 }
 
 double Flywheel::get_current_voltage() {
