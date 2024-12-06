@@ -2,7 +2,9 @@
 
 using namespace vex;
 
+
 void usercontrol() {
+
     // define DEADZONE to ignore small joystick inputs
     const double DEADZONE = 10.0;
     // Threshold for small value
@@ -64,13 +66,15 @@ void usercontrol() {
         // intake (keep pressing R1 button)
         if (whether_intake) {
             intake(MAXMOTOR_VOL);
+            transmit(MAXMOTOR_VOL);
         } else {
             stop_intake();
+            stop_transmit();
         }
 
         // shoot (keep pressing L1 button)
         if (whether_shoot) {
-            flywheel.set_target_voltage(10000);
+            flywheel.set_target_voltage(MAXMOTOR_VOL);
             flywheel.maintain_voltage();
         } else {
             flywheel.stop();

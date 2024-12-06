@@ -1,6 +1,6 @@
 /bin
 /build
 compile_commands.json
-/.vscode/*
+/.vscode/extensions.json
 
 # components

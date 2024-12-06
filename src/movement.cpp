@@ -2,6 +2,8 @@
 
 using namespace vex;
 
+const int max_voltage_for_auto=4000;
+
 void drive_forward_control(const double& voltage) {
     left_front_motor.spin(directionType::fwd, voltage, voltageUnits::mV);
     right_front_motor.spin(directionType::fwd, voltage, voltageUnits::mV);
@@ -30,14 +32,12 @@ void turn_right_control(const double& voltage) {
     right_back_motor.spin(directionType::rev, voltage, voltageUnits::mV);
 }
 
-void drive_forward_auto(const double& voltage) {
-    // get initial direction
-    double target_angle = inertial_sensor.heading();
+void drive_forward_auto(const double& voltage, double target_angle) {
     // set const for error correction
     const double kp = 1.5;
-    while (true) {
+    
         // get current angle
-        double current_angle = inertial_sensor.heading();
+        double current_angle = inertial_sensor.rotation();
         // calculate error
         double error = current_angle - target_angle;
         // set error to -180 degree to 180 degree
@@ -54,22 +54,20 @@ void drive_forward_auto(const double& voltage) {
         double right_voltage = voltage + correction;
         // run the motor
         left_front_motor.spin(directionType::fwd, left_voltage, voltageUnits::mV);
-        right_front_motor.spin(directionType::rev, right_voltage, voltageUnits::mV);
+        right_front_motor.spin(directionType::fwd, right_voltage, voltageUnits::mV);
         left_back_motor.spin(directionType::fwd, left_voltage, voltageUnits::mV);
-        right_back_motor.spin(directionType::rev, right_voltage, voltageUnits::mV);
+        right_back_motor.spin(directionType::fwd, right_voltage, voltageUnits::mV);
         // avoid endless loop
         vex::task::sleep(20);
-    }
+    
 }
 
-void drive_backward_auto(const double& voltage) {
-    // get initial direction
-    double target_angle = inertial_sensor.heading();
+void drive_backward_auto(const double& voltage, double target_angle) {
     // set const for correction
     const double kp = 1.5;
-    while (true) {
+    
         // get current angle
-        double current_angle = inertial_sensor.heading();
+        double current_angle = inertial_sensor.rotation();
         // calculate error
         double error = current_angle - target_angle;
         // set error to -180 degree to 180 degree
@@ -85,13 +83,13 @@ void drive_backward_auto(const double& voltage) {
         double left_voltage = voltage + correction;
         double right_voltage = voltage - correction;
         // run the motor
-        left_front_motor.spin(directionType::fwd, left_voltage, voltageUnits::mV);
+        left_front_motor.spin(directionType::rev, left_voltage, voltageUnits::mV);
         right_front_motor.spin(directionType::rev, right_voltage, voltageUnits::mV);
-        left_back_motor.spin(directionType::fwd, left_voltage, voltageUnits::mV);
+        left_back_motor.spin(directionType::rev, left_voltage, voltageUnits::mV);
         right_back_motor.spin(directionType::rev, right_voltage, voltageUnits::mV);
         // avoid endless loop
         vex::task::sleep(20);
-    }
+    
 }
 
 // Unit : mm (positive for forwards,
@@ -101,10 +99,10 @@ void move_certain_distance(int tr_distance) {
     if (tr_distance >= 0) {
         forward = true;
     }
-    tr_distance = abs(tr_distance);
+    tr_distance = abs_value(tr_distance);
 
     // need to be tested
-    double kP = 0.5;
+    double kP = 50;
     double kI = 0.0;
     double kD = 0.0;
 
@@ -118,6 +116,12 @@ void move_certain_distance(int tr_distance) {
     right_front_motor.resetPosition();
     left_back_motor.resetPosition();
     right_back_motor.resetPosition();
+
+
+    //set current angle to move straight
+    inertial_sensor.resetRotation();
+    double angle=inertial_sensor.rotation();
+
 
     // Time limit
     double Time_limit = 20.0; // set bigger to test the coefficient
@@ -136,40 +140,34 @@ void move_certain_distance(int tr_distance) {
 
         integral += error;
         derivative = error - previous_error;
-        if (sqrt(error) < 5) {
+        if (abs_value(error) < 5) {
             break;
         }
         double voltage = kP * error + kI * integral + kD * derivative;
-        if (sqrt(voltage) > MAXMOTOR_VOL) {
-            voltage = MAXMOTOR_VOL;
+        if (abs_value(voltage) > max_voltage_for_auto) {
+            voltage = max_voltage_for_auto;
         }
         previous_error = error;
 
         if (forward) {
-            drive_forward_auto(voltage);
+            drive_forward_auto(voltage,angle);
         } else {
-            drive_backward_auto(voltage);
+            drive_backward_auto(voltage,angle);
         }
         vex::task::sleep(20);
     }
     stop(coast);
 }
 
-void turn_certain_degree(int tr_degree)
-// Unit : degree (positive for turn right, negative for left)
+void turn_right_certain_degree(int tr_degree)
 {
-
-    bool right = false;
-    if (tr_degree >= 0) {
-        right = true;
-    }
-    tr_degree = abs(tr_degree) + inertial_sensor.heading();
-    Brain.Screen.print("Current Angle: %f", inertial_sensor.heading());
-
+    inertial_sensor.resetRotation();
+    
+    
     // need to be tested
-    double kP = 90;
-    double kI = 1;
-    double kD = 0.0;
+    double kP = 100;
+    double kI = 0;
+    double kD = 0;
 
     double error = 0;
     double previous_error = 0;
@@ -185,39 +183,89 @@ void turn_certain_degree(int tr_degree)
     // set bigger to test the coefficient
     double Time_limit = 20.0;
     vex::timer Timer;
-
+    double current_angle;
     while (Timer.time(sec) <= Time_limit) {
-        Brain.Screen.print("Current Angle: %f", inertial_sensor.heading());
+    
 
-        double current_angle;
-        if (right) {
-            current_angle = inertial_sensor.heading();
-        } else {
-            current_angle = 360 - inertial_sensor.heading();
-        }
+        
+        current_angle = inertial_sensor.rotation();
+
 
         error = tr_degree - current_angle;
 
         integral += error;
         derivative = error - previous_error;
-        if (abs(error) < 0.01 * tr_degree) {
+         if (abs_value(error)<5 ) {
             break;
-        }
+        } 
         double voltage = kP * error + kI * integral + kD * derivative;
-        if (abs(voltage) > MAXMOTOR_VOL) {
-            voltage = 6000;
+        if (abs_value(voltage) > max_voltage_for_auto) {
+            voltage = max_voltage_for_auto;
         }
         previous_error = error;
 
-        if (right) {
-            turn_right_control(voltage);
-        } else {
-            turn_left_control(voltage);
-        }
+        
+        turn_right_control(voltage);
+
         vex::task::sleep(20);
     }
 
     stop(coast);
+}
+
+void turn_left_certain_degree(int tr_degree)
+{
+    inertial_sensor.resetRotation();
+    
+    
+    // need to be tested
+    double kP = 100;
+    double kI = 0.1;
+    double kD = 0.1;
+
+    double error = 0;
+    double previous_error = 0;
+    double integral = 0;
+    double derivative = 0;
+
+    left_front_motor.resetPosition();
+    right_front_motor.resetPosition();
+    left_back_motor.resetPosition();
+    right_back_motor.resetPosition();
+
+    // Time limit
+    // set bigger to test the coefficient
+    double Time_limit = 20.0;
+    vex::timer Timer;
+    double current_angle;
+    while (Timer.time(sec) <= Time_limit) {
+    
+
+        
+        current_angle = inertial_sensor.rotation();
+
+
+        error = tr_degree + current_angle;
+
+        integral += error;
+        derivative = error - previous_error;
+         if (abs_value(error)<5 ) {
+            break;
+        } 
+        double voltage = kP * error + kI * integral + kD * derivative;
+        if (abs_value(voltage) > max_voltage_for_auto) {
+            voltage = max_voltage_for_auto;
+        }
+        previous_error = error;
+
+        
+        turn_left_control(voltage);
+
+        vex::task::sleep(20);
+    }
+
+    stop(coast);
+
 }
 
 void stop(brakeType b_type) {
@@ -230,7 +278,14 @@ void stop(brakeType b_type) {
 // Unit : mm
 double distance_to_degree(double distance) {
     // Unit : mm
-    double wheel_radius = 20;
+    double wheel_radius = 34.925;
     double C = 2.0 * M_PI * wheel_radius;
     return distance / C * 360.0;
+}
+
+double abs_value(double num) {
+    if (num <=0) {
+    num = -num;
+    } 
+    return num;
 }
