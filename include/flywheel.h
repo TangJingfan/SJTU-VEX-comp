@@ -7,7 +7,7 @@ using namespace vex;
 
 class Flywheel {
 private:
-  vex::motor flywheel;
+  vex::motor& flywheel;
   double target_voltage;
   double kP, kI, kD;
   double current_error, previous_error, integral, derivative;
