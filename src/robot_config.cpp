@@ -10,22 +10,22 @@ competition Competition;
 controller Controller;
 
 // Motor setup
-motor left_front_motor(PORT10, gearSetting::ratio18_1, false);
-motor right_front_motor(PORT6, gearSetting::ratio18_1, true);
-motor left_back_motor(PORT19, gearSetting::ratio18_1, false);
-motor right_back_motor(PORT13, gearSetting::ratio18_1, true);
+motor left_front_motor(PORT17, gearSetting::ratio18_1, false);
+motor right_front_motor(PORT18, gearSetting::ratio18_1, true);
+motor left_back_motor(PORT4, gearSetting::ratio18_1, false);
+motor right_back_motor(PORT9, gearSetting::ratio18_1, true);
 
 // Flywheel
-motor flywheel_motor(PORT1, gearSetting::ratio18_1, false);
+motor flywheel_motor(PORT6, gearSetting::ratio18_1, false);
 
 // Intaker
 motor intaker_motor(PORT20, gearSetting::ratio18_1, false);
 
 // Transmitter
-motor transmitter_motor(PORT3, gearSetting::ratio18_1, false);
+motor transmitter_motor(PORT10, gearSetting::ratio18_1, false);
 
 // inertial sensor setup
-inertial inertial_sensor(PORT9);
+inertial inertial_sensor(PORT11);
 
 // Brain for feedback
 brain Brain;

@@ -19,9 +19,9 @@ void drive_backward_auto(const double &voltage, double target_angle);
 
 void stop(brakeType b_type);
 
-void move_certain_forward_distance(double tr_distance, double max_voltage);
+void move_certain_forward_distance(double tr_distance, double max_voltage,double time);
 
-void move_certain_backward_distance(double tr_distance, double max_voltage);
+void move_certain_backward_distance(double tr_distance, double max_voltage, double time);
 
 void turn_right_certain_degree(double tr_degree ,double max_voltage );
 

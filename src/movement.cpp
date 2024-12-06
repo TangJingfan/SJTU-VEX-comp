@@ -92,7 +92,7 @@ void drive_backward_auto(const double& voltage, double target_angle) {
 }
 
 // Unit : mm 
-void move_certain_forward_distance(double tr_distance, double max_voltage) {
+void move_certain_forward_distance(double tr_distance, double max_voltage,double time) {
     // need to be tested
     double kP = 50;
     double kI = 0.0;
@@ -116,10 +116,10 @@ void move_certain_forward_distance(double tr_distance, double max_voltage) {
 
 
     // Time limit
-    double Time_limit = 20.0; // set bigger to test the coefficient
+    
     vex::timer Timer;
 
-    while (Timer.time(sec) < Time_limit) {
+    while (Timer.time(sec) < time) {
 
         double Motor1_position = left_front_motor.position(degrees);
         double Motor2_position = right_front_motor.position(degrees);
@@ -147,7 +147,7 @@ void move_certain_forward_distance(double tr_distance, double max_voltage) {
     stop(coast);
 }
 
-void move_certain_backward_distance(double tr_distance, double max_voltage){
+void move_certain_backward_distance(double tr_distance, double max_voltage,double time){
     // need to be tested
     double kP = 50;
     double kI = 0.0;
@@ -171,10 +171,9 @@ void move_certain_backward_distance(double tr_distance, double max_voltage){
 
 
     // Time limit
-    double Time_limit = 20.0; // set bigger to test the coefficient
     vex::timer Timer;
 
-    while (Timer.time(sec) < Time_limit) {
+    while (Timer.time(sec) <time ) {
 
         double Motor1_position = left_front_motor.position(degrees);
         double Motor2_position = right_front_motor.position(degrees);
