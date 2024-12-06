@@ -19,7 +19,7 @@ motor right_back_motor(PORT13, gearSetting::ratio18_1, true);
 motor flywheel_motor(PORT1, gearSetting::ratio18_1, false);
 
 // Intaker
-motor intaker_motor(PORT2, gearSetting::ratio18_1, false);
+motor intaker_motor(PORT20, gearSetting::ratio18_1, false);
 
 // Transmitter
 motor transmitter_motor(PORT3, gearSetting::ratio18_1, false);
