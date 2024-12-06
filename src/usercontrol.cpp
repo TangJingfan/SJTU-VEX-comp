@@ -29,8 +29,8 @@ void usercontrol() {
         bool whether_intake = Controller.ButtonR1.pressing();
 
         // Scale axis values to motor voltage
-        double forward_backward_voltage;
-        double left_right_voltage;
+        double forward_backward_voltage = 0;
+        double left_right_voltage = 0;
         // Scale axis values to motor voltage
 
         if (whether_rev) {
