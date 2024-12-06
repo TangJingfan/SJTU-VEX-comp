@@ -5,12 +5,15 @@ using namespace vex;
 void autonomous() {
 
   move_certain_distance(1000); // 609.5mm per foam plate
-  // intake
+  intake(MAXMOTOR_VOL);
+  task::sleep(1000);
   stop_intake();
   turn_certain_degree(153);
   task::sleep(100);
   move_certain_distance(1300);
-  // reverse intake
+  intake(MAXMOTOR_VOL);
+  task::sleep(1000);
+  stop_intake();
   turn_certain_degree(180);
   task::sleep(100);
   move_certain_distance(60);
