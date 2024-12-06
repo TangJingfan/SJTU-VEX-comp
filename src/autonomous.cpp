@@ -4,8 +4,15 @@ using namespace vex;
 
 void autonomous() {
 
-  move_certain_distance(800);
-  move_certain_distance(-800);
+  turn_certain_degree(-90);
+  task::sleep(100);
+  turn_certain_degree(90);
+  task::sleep(100);
+  turn_certain_degree(90);
+  task::sleep(100);
+  turn_certain_degree(90);
+  task::sleep(100);
+  turn_certain_degree(90);
   while (1) {
     // allow other tasks to run
     this_thread::sleep_for(10);
