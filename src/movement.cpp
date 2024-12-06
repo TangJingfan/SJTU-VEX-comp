@@ -2,6 +2,8 @@
 
 using namespace vex;
 
+const int max_voltage_for_auto=4000;
+
 void drive_forward_control(const double& voltage) {
     left_front_motor.spin(directionType::fwd, voltage, voltageUnits::mV);
     right_front_motor.spin(directionType::fwd, voltage, voltageUnits::mV);
@@ -101,7 +103,7 @@ void move_certain_distance(int tr_distance) {
     if (tr_distance >= 0) {
         forward = true;
     }
-    tr_distance = abs(tr_distance);
+    tr_distance = abs_value(tr_distance);
 
     // need to be tested
     double kP = 0.5;
@@ -163,13 +165,13 @@ void turn_certain_degree(int tr_degree)
     if (tr_degree >= 0) {
         right = true;
     }
-    tr_degree = abs(tr_degree) + inertial_sensor.heading();
+    tr_degree = abs_value(tr_degree) + inertial_sensor.heading();
     Brain.Screen.print("Current Angle: %f", inertial_sensor.heading());
 
     // need to be tested
-    double kP = 90;
-    double kI = 1;
-    double kD = 0.0;
+    double kP = 800;
+    double kI = 0.2;
+    double kD = 0;
 
     double error = 0;
     double previous_error = 0;
@@ -200,12 +202,12 @@ void turn_certain_degree(int tr_degree)
 
         integral += error;
         derivative = error - previous_error;
-        if (abs(error) < 0.01 * tr_degree) {
+        if (abs_value(error)<2) {
             break;
         }
         double voltage = kP * error + kI * integral + kD * derivative;
-        if (abs(voltage) > MAXMOTOR_VOL) {
-            voltage = 6000;
+        if (abs_value(voltage) > max_voltage_for_auto) {
+            voltage = max_voltage_for_auto;
         }
         previous_error = error;
 
@@ -233,4 +235,11 @@ double distance_to_degree(double distance) {
     double wheel_radius = 20;
     double C = 2.0 * M_PI * wheel_radius;
     return distance / C * 360.0;
+}
+
+double abs_value(double num) {
+    if (num <=0) {
+    num = -num;
+    } 
+    return num;
 }
