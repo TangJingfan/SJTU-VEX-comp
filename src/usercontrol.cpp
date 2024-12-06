@@ -75,9 +75,9 @@ void usercontrol() {
         // shoot (keep pressing L1 button)
         if (whether_shoot) {
             flywheel.set_target_voltage(MAXMOTOR_VOL);
-            flywheel.maintain_voltage();
         } else {
-            flywheel.stop();
+            // flywheel.stop();
+            flywheel.set_target_voltage(0);
         }
 
         // Delay for task scheduler
