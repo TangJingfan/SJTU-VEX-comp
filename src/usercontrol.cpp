@@ -30,8 +30,10 @@ void usercontrol() {
         double forward_backward_voltage;
         double left_right_voltage;
         // Scale axis values to motor voltage
-        if (forward_backward_axis_value_1 > DEADZONE &&
-            forward_backward_axis_value_1 < threshold_for_movement) {
+        if ((forward_backward_axis_value_1 > DEADZONE &&
+            forward_backward_axis_value_1 < threshold_for_movement) 
+            && !(forward_backward_axis_value_2 > DEADZONE &&
+            forward_backward_axis_value_2 < threshold_for_movement)) {
             forward_backward_voltage = min_voltage;
         } else {
             forward_backward_voltage = (forward_backward_axis_value_1 * max_voltage) / 100;
