@@ -3,5 +3,10 @@
 		"${config:vexrobotics.vexcode.Cpp.Sdk.Home}\\V5\\V5_20240802_15_00_00\\vexv5\\gcc\\include\\sys"
 	],
 	"ros.distro": "humble",
-	"C_Cpp.default.compilerPath": "c:\\Users\\tangj\\AppData\\Roaming\\Code\\User\\globalStorage\\vexrobotics.vexcode\\tools\\cpp\\toolchain_win32\\clang\\bin\\clang"
+	"C_Cpp.default.compilerPath": "c:\\Users\\tangj\\AppData\\Roaming\\Code\\User\\globalStorage\\vexrobotics.vexcode\\tools\\cpp\\toolchain_win32\\clang\\bin\\clang",
+	"files.associations": {
+		"array": "cpp",
+		"string": "cpp",
+		"initializer_list": "cpp"
+	}
 }
