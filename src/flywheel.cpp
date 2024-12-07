@@ -3,18 +3,23 @@
 
 using namespace vex;
 
-Flywheel::Flywheel(vex::motor motor, double kp, double ki, double kd)
-    : flywheel(motor), target_voltage(0), kP(kp), kI(ki), kD(kd), current_error(0),
-      previous_error(0), integral(0), derivative(0) {};
+void set_voltage(double voltage)
+{
+    target_voltage = voltage;
+}
 
-void Flywheel::set_target_voltage(double voltage) { target_voltage = voltage; }
-
-void Flywheel::maintain_voltage() {
+void maintain_voltage() {
+    double integral = 0;
+    double derivative = 0;
+    double previous_error = 0;
+    double kP = 0.5;
+    double kI = 0.5;
+    double kD = 0.5;
     while (true) {
         // get current voltage
         double current_voltage = get_current_voltage();
         // calculate error
-        current_error = target_voltage - current_voltage;
+        double current_error = target_voltage - current_voltage;
         // calculate integral and derivative
         integral += current_error;
         derivative = current_error - previous_error;
@@ -29,16 +34,16 @@ void Flywheel::maintain_voltage() {
             voltage = 0;
         }
         // spin, maintain the voltage
-        std::cout << "voltage: " << voltage << std::endl;
-        flywheel.spin(vex::directionType::fwd, voltage, vex::voltageUnits::mV);
+        std::cout << "current voltage: " << current_voltage << std::endl;
+        flywheel_motor.spin(vex::directionType::fwd, voltage, vex::voltageUnits::mV);
         this_thread::sleep_for(10);
     }
 }
 
-double Flywheel::get_current_voltage() {
+double get_current_voltage() {
     // get power and current, then calculate voltage
-    double power = flywheel.power(vex::powerUnits::watt);
-    double current = flywheel.current(vex::currentUnits::amp);
+    double power = flywheel_motor.power(vex::powerUnits::watt);
+    double current = flywheel_motor.current(vex::currentUnits::amp);
     // deal with extreme values
     if (current > 0) {
         return power / current * 1000;
@@ -47,4 +52,4 @@ double Flywheel::get_current_voltage() {
     }
 }
 
-void Flywheel::stop() { flywheel.stop(coast); }
+void stop_flywheel() { flywheel_motor.stop(coast); }

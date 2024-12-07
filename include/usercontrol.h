@@ -8,6 +8,4 @@
 
 void usercontrol();
 
-extern Flywheel flywheel;
-
 #endif

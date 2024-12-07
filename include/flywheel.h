@@ -5,23 +5,14 @@
 
 using namespace vex;
 
-class Flywheel {
-private:
-  vex::motor& flywheel;
-  double target_voltage;
-  double kP, kI, kD;
-  double current_error, previous_error, integral, derivative;
+double target_voltage;
 
-public:
-  Flywheel(vex::motor motor, double kp, double ki, double kd);
+void maintain_voltage();
 
-  void set_target_voltage(double voltage);
+void set_voltage(double voltage);
 
-  void maintain_voltage();
+double get_current_voltage();
 
-  double get_current_voltage();
-
-  void stop();
-};
+void stop_flywheel();
 
 #endif

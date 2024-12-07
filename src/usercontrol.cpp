@@ -1,7 +1,8 @@
 #include "usercontrol.h"
+#include "flywheel.h"
+#include <iostream>
 
 using namespace vex;
-
 
 void usercontrol() {
 
@@ -21,12 +22,12 @@ void usercontrol() {
         double forward_backward_axis_value_rev = Controller.Axis2.position();
         double left_right_axis_value_rev = Controller.Axis1.position();
 
-        bool whether_rev = Controller.ButtonR2.pressing();
-
 
         // Get button information
         bool whether_shoot = Controller.ButtonL1.pressing();
         bool whether_intake = Controller.ButtonR1.pressing();
+        bool whether_rev = Controller.ButtonR2.pressing();
+        bool whether_transmit = Controller.ButtonL2.pressing();
 
         // Scale axis values to motor voltage
         double forward_backward_voltage = 0;
@@ -56,9 +57,9 @@ void usercontrol() {
             }
             if (left_right_axis_value_rev > DEADZONE &&
             left_right_axis_value_rev < threshold_for_movement) {
-                left_right_voltage = -min_voltage;
+                left_right_voltage = min_voltage;
             } else {
-                left_right_voltage = -(left_right_axis_value_rev * max_voltage) / 100;
+                left_right_voltage = (left_right_axis_value_rev * max_voltage) / 100;
             }
         }
         
@@ -97,18 +98,22 @@ void usercontrol() {
         // intake (keep pressing R1 button)
         if (whether_intake) {
             intake(MAXMOTOR_VOL);
-            transmit(MAXMOTOR_VOL);
         } else {
-            stop_intake();
+            stop_intake();;
+        }
+
+        if (whether_transmit) {
+            transmit(MAXMOTOR_VOL);            
+        } else {
             stop_transmit();
         }
 
         // shoot (keep pressing L1 button)
         if (whether_shoot) {
-            flywheel.set_target_voltage(MAXMOTOR_VOL);
+            set_voltage(8000);
         } else {
             // flywheel.stop();
-            flywheel.set_target_voltage(0);
+            stop_flywheel();
         }
 
         // Delay for task scheduler

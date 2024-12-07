@@ -1,17 +1,12 @@
 #include "autonomous.h"
 #include "robot_config.h"
+#include "flywheel.h"
 #include "usercontrol.h"
 #include <thread>
 
 using namespace vex;
 
-// define flywheel
-// kp, ki, kd need to be modified
-Flywheel flywheel(flywheel_motor, 0.1, 0.02, 0.01);
 
-void update_flywheel() {
-  flywheel.maintain_voltage();
-}
 
 int main() {
   // calibrate inertial seneor
@@ -23,7 +18,7 @@ int main() {
   }
   Brain.Screen.clearScreen();
 
-  thread flywheel_thread(update_flywheel);
+  thread flywheel_thread(maintain_voltage);
 
   // thread flywheel_thread((void*)(flywheel.maintain_voltage));
 
