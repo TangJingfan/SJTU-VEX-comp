@@ -4,12 +4,12 @@
 #include "robot_config.h"
 
 using namespace vex;
+void updateFlywheel();
 
-double target_voltage;
+double getFlyWheelSpeed();
+void setFlyWheelSpeed(double speed);
 
-void maintain_voltage();
-
-void set_voltage(double voltage);
+void calcFlyWheelSpeed();
 
 double get_current_voltage();
 

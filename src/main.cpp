@@ -1,12 +1,11 @@
 #include "autonomous.h"
-#include "robot_config.h"
 #include "flywheel.h"
+#include "robot_config.h"
 #include "usercontrol.h"
+#include <iostream>
 #include <thread>
 
 using namespace vex;
-
-
 
 int main() {
   // calibrate inertial seneor
@@ -18,7 +17,8 @@ int main() {
   }
   Brain.Screen.clearScreen();
 
-  thread flywheel_thread(maintain_voltage);
+  thread flywheel_thread(updateFlywheel);
+  thread flywheel_calcSpd(calcFlyWheelSpeed);
 
   // thread flywheel_thread((void*)(flywheel.maintain_voltage));
 
@@ -28,6 +28,6 @@ int main() {
 
   // Prevent main from exiting
   while (true) {
-    task::sleep(50);
+    task::sleep(20);
   }
 }
