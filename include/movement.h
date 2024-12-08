@@ -2,6 +2,8 @@
 #define MOVEMENT_H
 
 #include "robot_config.h"
+#include "intaker.h"
+#include "transmitter.h"
 
 using namespace vex;
 
@@ -21,7 +23,10 @@ void stop(brakeType b_type);
 
 void move_certain_forward_distance(double tr_distance, double max_voltage,double time);
 
+void move_certain_forward_distance_and_intake(double tr_distance, double max_voltage,double time);
+
 void move_certain_backward_distance(double tr_distance, double max_voltage, double time);
+
 
 void turn_right_certain_degree(double tr_degree ,double max_voltage );
 

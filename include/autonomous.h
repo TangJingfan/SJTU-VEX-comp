@@ -8,8 +8,8 @@
 
 void autonomous();
 
-void auto_rot1();
-void auto_rot2();
-void auto_rot3();
-void auto_rot4();
+void auto_rot_blue_left();
+void auto_rot_blue_right();
+void auto_rot_red_left();
+void auto_rot_red_right();
 #endif

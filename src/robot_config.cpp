@@ -16,7 +16,7 @@ motor left_back_motor(PORT4, gearSetting::ratio18_1, false);
 motor right_back_motor(PORT9, gearSetting::ratio18_1, true);
 
 // Flywheel
-motor flywheel_motor(PORT6, gearSetting::ratio18_1, false);
+motor flywheel_motor(PORT7, gearSetting::ratio18_1, true);
 
 // Intaker
 motor intaker_motor(PORT20, gearSetting::ratio18_1, false);

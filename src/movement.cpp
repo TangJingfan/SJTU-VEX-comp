@@ -140,11 +140,71 @@ void move_certain_forward_distance(double tr_distance, double max_voltage,double
             voltage = max_voltage;
         }
         previous_error = error;
-
+        // intake(8000);
         drive_forward_auto(voltage,angle);
         vex::task::sleep(20);
     }
     stop(coast);
+}
+
+void move_certain_forward_distance_and_intake(double tr_distance, double max_voltage,double time) {
+    // need to be tested
+    double kP = 50;
+    double kI = 0.0;
+    double kD = 0.0;
+
+    double error = 0;
+    double previous_error = 0;
+    double integral = 0;
+    double derivative = 0;
+
+    double targetRotation = distance_to_degree(tr_distance);
+    left_front_motor.resetPosition();
+    right_front_motor.resetPosition();
+    left_back_motor.resetPosition();
+    right_back_motor.resetPosition();
+
+
+    //set current angle to move straight
+    inertial_sensor.resetRotation();
+    double angle=inertial_sensor.rotation();
+
+
+    // Time limit
+    
+    vex::timer Timer;
+
+    while (Timer.time(sec) < time) {
+
+        double Motor1_position = left_front_motor.position(degrees);
+        double Motor2_position = right_front_motor.position(degrees);
+        double Motor3_position = left_back_motor.position(degrees);
+        double Motor4_position = right_back_motor.position(degrees);
+
+        double current_position =
+            (Motor1_position + Motor2_position + Motor3_position + Motor4_position) / 4.0;
+        error = targetRotation - current_position;
+
+        integral += error;
+        derivative = error - previous_error;
+        if (abs_value(error) < 10) {
+            break;
+        }
+        double voltage = kP * error + kI * integral + kD * derivative;
+        if (abs_value(voltage) > max_voltage) {
+            voltage = max_voltage;
+        }
+        previous_error = error;
+
+        drive_forward_auto(voltage,angle);
+        intake(MAXMOTOR_VOL);
+        transmit(MAXMOTOR_VOL);
+        vex::task::sleep(20);
+    }
+    stop(coast);
+    vex::task::sleep(2000);
+    stop_intake();
+    stop_transmit();
 }
 
 void move_certain_backward_distance(double tr_distance, double max_voltage,double time){
