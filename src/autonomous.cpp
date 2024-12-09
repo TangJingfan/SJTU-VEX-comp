@@ -1,23 +1,51 @@
-#include "movement.h"
-#include "robot_config.h"
-#include "vex.h"
+#include "autonomous.h"
 
 using namespace vex;
 
 void autonomous() {
+  auto_rot_blue_left();
+  //auto_rot_blue_right();
+  //auto_rot_red_left();
+  //auto_rot_red_right();
+  
 
-  // Brain.Screen.setCursor(2, 5);
-  // Brain.Screen.print("Autonomous Mode");
+  while (1) {
+    // allow other tasks to run
+    this_thread::sleep_for(10);
+  }
+}
 
-  // // Example autonomous sequence
-  // drive_forward_auto(6000);
-  // task::sleep(2000);
-  // // Drive forward for 2 seconds
 
-  // drive_backward_auto(6000);
-  // task::sleep(2000);
-  // // Drive backward for 2 seconds
+void auto_rot_blue_left(){
+  move_certain_forward_distance(1280,8000,10);
+  turn_right_certain_degree(180,4000);
+  move_certain_backward_distance(170,4000,2);
+  turn_left_certain_degree(70,4000);
+  move_certain_backward_distance(1520,6000,7);
 
-  // Brain.Screen.setCursor(2, 6);
-  // Brain.Screen.print("Autonomous complete");
+
+  move_certain_forward_distance(500,4000,7);
+}
+
+
+void auto_rot_blue_right(){
+  move_certain_forward_distance(1489,MAXMOTOR_VOL,10);
+  turn_left_certain_degree(34,4000);
+  move_certain_backward_distance(1630,8000,7);
+
+}
+
+void auto_rot_red_left(){
+  move_certain_forward_distance(1439,MAXMOTOR_VOL,10);
+  turn_right_certain_degree(38,4000);
+  move_certain_backward_distance(1630,8000,7);
+
+}
+
+
+void auto_rot_red_right(){
+  move_certain_forward_distance(1489,MAXMOTOR_VOL,10);
+  turn_left_certain_degree(34,4000);
+  move_certain_backward_distance(1630,8000,7);
+
 }

@@ -3,6 +3,8 @@
 
 #include "vex.h"
 
+const int MAXMOTOR_VOL = 12000;
+
 using namespace vex;
 
 extern competition Competition;
@@ -13,6 +15,12 @@ extern motor left_front_motor;
 extern motor right_front_motor;
 extern motor left_back_motor;
 extern motor right_back_motor;
+
+extern motor flywheel_motor;
+
+extern motor intaker_motor;
+
+extern motor transmitter_motor;
 
 extern inertial inertial_sensor;
 
